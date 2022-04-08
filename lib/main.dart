@@ -1,7 +1,11 @@
+import 'package:examenfinalmovil/api/peticiones_api.dart';
+import 'package:examenfinalmovil/controllers/ricky_controller.dart';
 import 'package:examenfinalmovil/pages/rick_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 void main(){
+  Get.lazyPut(() => PeticionesApi());
+  Get.lazyPut(() => RickyController());
   runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -14,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Examen final',
       initialRoute: '/rick',
       routes: {
-        '/rick' : (context) =>  const RickPage(),
+        '/rick' : (context) => RickPage(),
       },
     );
   }
