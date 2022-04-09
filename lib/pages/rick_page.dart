@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 class RickPage extends StatelessWidget {
     RickPage({Key? key}) : super(key: key);
 
-   final rickycontroller = Get.find<RickyController>();
+  //  final rickycontroller = Get.find<RickyController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +25,32 @@ class RickPage extends StatelessWidget {
       ),
 
       body: GetBuilder<RickyController>(builder: (rickyController){
-        return GridView.builder(
+        return (rickyController.cargando == true) ?Center(child: CircularProgressIndicator(),) : GridView.builder(
           shrinkWrap: true,
-          itemCount: rickycontroller.personajes.length,
+          itemCount: rickyController.personajes.length,
           itemBuilder: (context,i){
-            final morty = rickycontroller.personajes[i];
+            final morty = rickyController.personajes[i];
             return Stack(
+              clipBehavior: Clip.none,
               children: [
                 Container(
-                  child: Column(  
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: EdgeInsets.all(15),
+                  child: Stack(
                     children: [
-                      Text(morty.name!, style: TextStyle(  
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                      ),),
-                      Text(morty.status!),
+                      Image.network('http://pa1.narvii.com/7635/a2c15379e0ada547e084edb7e390968cde0e495er1-350-350_00.gif'),
+                      Column(  
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(morty.name!, style: TextStyle(  
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                          ),),
+                          Text(morty.status!),
+                          Text(morty.species!),
+                          Text(morty.gender!)
+                        ],
+                      ),
                     ],
                   ),
                   margin: EdgeInsets.all(5),
@@ -53,23 +62,25 @@ class RickPage extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  right: 45,
-                  bottom: 75,
-                  child: Image.network(morty.image!,
-                  fit: BoxFit.fill,height:120,
+                  right: 10,
+                  bottom: 15,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: FadeInImage(
+                      fit: BoxFit.cover,height:120,
+                      placeholder: AssetImage('assets/images/cargar.gif'),
+                      image: NetworkImage(morty.image!,
+                      )
+                      ,
+                      )
+                    ),
                   ),
-                )
               ],
             );
 
           }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),);
 
       }),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        rickycontroller.obtenerCharacter();
-      },
-      child: Icon(Icons.add),
-      ),
       );
   }
 }
